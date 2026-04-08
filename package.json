@@ -1,0 +1,23 @@
+{
+  "name": "soft-windows-nuxt3",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxt/icon": "^1.10.0",
+    "@nuxt/image": "^1.8.0",
+    "nodemailer": "^6.9.15",
+    "nuxt": "^3.13.0",
+    "vue": "^3.5.0"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.16",
+    "typescript": "^5.5.0"
+  }
+}
