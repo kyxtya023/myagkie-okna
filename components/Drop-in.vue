@@ -5,42 +5,80 @@ const isVisible = ref(false);
 const isExpanded = ref(false);
 const slider = ref(50);
 
-const STORAGE_KEY = "design-update-v1";
+const config = ref<any>(null);
 
-/* =========================
-   DEVICE STATE
-========================= */
 const device = ref<"desktop" | "tablet" | "mobile">("desktop");
 const orientation = ref<"portrait" | "landscape">("portrait");
 const mobileSize = ref<"xs" | "sm" | "md">("md");
 
-/* =========================
-   SAFE SSR INIT
-========================= */
 const width = ref(0);
 const height = ref(0);
 
-/* =========================
-   RESIZE LISTENER (CLIENT ONLY)
-========================= */
 const setSize = () => {
   width.value = window.innerWidth;
   height.value = window.innerHeight;
 };
 
-onMounted(() => {
-  setSize();
+/* =========================
+   ЗАГРУЗКА КОНФИГА
+========================= */
+const loadConfig = async () => {
+  try {
+    const res = await fetch(
+      `${useRuntimeConfig().app.baseURL}config/design-toast.json`,
+    );
 
+    config.value = await res.json();
+  } catch (e) {
+    console.warn("Не удалось загрузить конфиг toast", e);
+    config.value = null;
+  }
+};
+
+/* =========================
+   ИНИЦИАЛИЗАЦИЯ
+========================= */
+onMounted(async () => {
+  setSize();
   window.addEventListener("resize", setSize);
+
+  await loadConfig();
+
+  if (!config.value?.enabled) return;
+
+  const expiresAt = new Date(config.value.expiresAt).getTime();
+  const now = Date.now();
+
+  // ❌ срок истёк — больше никогда не показываем
+  if (now > expiresAt) return;
+
+  const STORAGE_KEY = config.value.storageKey || "design-update-v1";
+
+  const data = localStorage.getItem(STORAGE_KEY);
+
+  // ❌ если уже закрыто — больше не показываем
+  if (data) {
+    try {
+      const parsed = JSON.parse(data);
+
+      if (parsed?.closed === true) {
+        return;
+      }
+    } catch (e) {
+      console.warn("Ошибка в данных toast в localStorage");
+    }
+  }
+
+  // ✔ показать уведомление
+  isVisible.value = true;
 });
 
-/* cleanup (ВАЖНО в Nuxt) */
 onBeforeUnmount(() => {
   window.removeEventListener("resize", setSize);
 });
 
 /* =========================
-   REACTIVE DEVICE ENGINE
+   ЛОГИКА УСТРОЙСТВА
 ========================= */
 watchEffect(() => {
   if (!width.value || !height.value) return;
@@ -68,7 +106,7 @@ watchEffect(() => {
 });
 
 /* =========================
-   IMAGES
+   ИЗОБРАЖЕНИЯ
 ========================= */
 const images = {
   old: {
@@ -123,7 +161,7 @@ const images = {
 };
 
 /* =========================
-   COMPUTED IMAGES
+   ВЫЧИСЛЯЕМЫЕ ИЗОБРАЖЕНИЯ
 ========================= */
 const oldImage = computed(() => {
   if (device.value === "desktop") {
@@ -156,19 +194,29 @@ const newImage = computed(() => {
 });
 
 /* =========================
-   UI
+   UI ДЕЙСТВИЯ
 ========================= */
 const openSlider = () => {
   isExpanded.value = true;
 };
 
 const closeAll = () => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ closedAt: Date.now() }));
+  const key = config.value?.storageKey || "design-update-v1";
+
+  // 💥 навсегда закрываем уведомление
+  localStorage.setItem(
+    key,
+    JSON.stringify({
+      closed: true,
+      closedAt: Date.now(),
+    }),
+  );
+
   isVisible.value = false;
 };
 
 /* =========================
-   DRAG
+   ПЕРЕТАСКИВАНИЕ СЛАЙДЕРА
 ========================= */
 const startDrag = (e: MouseEvent | TouchEvent) => {
   const move = (event: any) => {
@@ -194,42 +242,21 @@ const startDrag = (e: MouseEvent | TouchEvent) => {
   window.addEventListener("touchmove", move);
   window.addEventListener("touchend", stop);
 };
-
-/* =========================
-   STORAGE LOGIC
-========================= */
-onMounted(() => {
-  const data = localStorage.getItem(STORAGE_KEY);
-
-  if (!data) {
-    isVisible.value = true;
-  } else {
-    const { closedAt } = JSON.parse(data);
-    const month = 1000 * 60 * 60 * 24 * 30;
-
-    if (Date.now() - closedAt > month) {
-      isVisible.value = true;
-    }
-  }
-});
 </script>
+
 <template>
   <Transition name="toast">
     <div v-if="isVisible" class="toast">
-      <!-- STEP 1 -->
       <div v-if="!isExpanded" class="toast-content">
         <div class="toast-text">✨ Мы обновили дизайн сайта</div>
 
         <button class="btn btn-primary" @click="openSlider">Посмотреть</button>
       </div>
 
-      <!-- STEP 2 -->
       <div v-else class="slider-wrapper">
         <div class="slider">
-          <!-- AFTER (низ) -->
           <img :src="oldImage" class="img after" />
 
-          <!-- BEFORE (верх) -->
           <div
             class="before"
             :style="{ clipPath: `inset(0 ${100 - slider}% 0 0)` }"
@@ -237,7 +264,6 @@ onMounted(() => {
             <img :src="newImage" class="img" />
           </div>
 
-          <!-- HANDLE -->
           <div
             class="handle"
             :style="{ left: slider + '%' }"
@@ -282,7 +308,6 @@ onMounted(() => {
   z-index: 999;
 }
 
-/* STEP 1 */
 .toast-content {
   padding: 2rem;
   display: flex;
@@ -296,11 +321,10 @@ onMounted(() => {
   color: var(--text-primary);
 }
 
-/* STEP 2 */
 .slider-wrapper {
   position: relative;
   padding: 1rem;
-  animation: slideUp 0.4s ease;
+  animation: slideUp 0.9s ease;
 }
 
 .slider {
@@ -366,7 +390,6 @@ onMounted(() => {
   transform: translate(-50%, -50%);
 }
 
-/* close */
 .close-btn {
   position: absolute;
   top: 0.5rem;
@@ -377,9 +400,11 @@ onMounted(() => {
   width: 3rem;
   height: 3rem;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-/* animations */
 .toast-enter-active,
 .toast-leave-active {
   transition: all 0.4s ease;
