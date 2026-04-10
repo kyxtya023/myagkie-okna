@@ -8,22 +8,31 @@ const { theme, toggleTheme } = useTheme();
 const isMenuOpen = ref(false);
 const isScrolled = ref(false);
 
+/* =========================
+   NAV ITEMS (БЕЗ HREF)
+========================= */
 const navItems: NavItem[] = [
-  { id: "why-us", label: "Почему мы", href: "#why-us" },
-  { id: "advantages", label: "Преимущества", href: "#advantages" },
-  { id: "materials", label: "Материалы", href: "#materials" },
-  { id: "prices", label: "Цены", href: "#prices" },
-  { id: "gallery", label: "Галерея", href: "#gallery" },
-  { id: "estimate", label: "Получить смету", href: "#quiz" },
-  { id: "faq", label: "FAQ", href: "#faq" },
+  { id: "why-us", label: "Почему мы" },
+  { id: "advantages", label: "Преимущества" },
+  { id: "materials", label: "Материалы" },
+  { id: "prices", label: "Цены" },
+  { id: "gallery", label: "Галерея" },
+  { id: "quiz", label: "Получить смету" },
+  { id: "faq", label: "Частые вопросы" },
 ];
 
+/* =========================
+   КОНТАКТЫ
+========================= */
 const contactInfo = {
   phone: "+7 (966) 126-66-06",
   address: "Работаем по Москве и МО",
-  schedule: "Ежедневно: 10:00-19:00",
+  schedule: "Ежедневно: 9:00-21:00",
 };
 
+/* =========================
+   МЕНЮ
+========================= */
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value;
   document.body.style.overflow = isMenuOpen.value ? "hidden" : "";
@@ -34,12 +43,53 @@ const closeMenu = () => {
   document.body.style.overflow = "";
 };
 
+/* =========================
+   СКРОЛЛ ШАПКИ
+========================= */
 const handleScroll = () => {
   isScrolled.value = window.scrollY > 50;
 };
 
+/* =========================
+   SPA СКРОЛЛ (БЕЗ HASH)
+========================= */
+const scrollToSection = (id: string) => {
+  const el = document.getElementById(id);
+  if (!el) return;
+
+  const headerOffset = 80; // подгони под свою шапку
+  const elementPosition = el.getBoundingClientRect().top + window.scrollY;
+  const offsetPosition = elementPosition - headerOffset;
+
+  window.scrollTo({
+    top: offsetPosition,
+    behavior: "smooth",
+  });
+
+  // 💥 убираем hash если вдруг появился
+  history.replaceState(null, "", window.location.pathname);
+
+  closeMenu();
+};
+
+/* =========================
+   INIT
+========================= */
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
+
+  // ❌ отключаем восстановление скролла браузером
+  if ("scrollRestoration" in history) {
+    history.scrollRestoration = "manual";
+  }
+
+  // 💥 всегда при загрузке наверх
+  window.scrollTo(0, 0);
+
+  // на всякий случай убираем hash
+  if (window.location.hash) {
+    history.replaceState(null, "", window.location.pathname);
+  }
 });
 
 onUnmounted(() => {
@@ -79,7 +129,13 @@ onUnmounted(() => {
       <nav class="nav-desktop" aria-label="Главное меню">
         <ul class="nav-list">
           <li v-for="item in navItems" :key="item.id">
-            <a :href="item.href" class="nav-link">{{ item.label }}</a>
+            <a
+              href="#"
+              class="nav-link"
+              @click.prevent="scrollToSection(item.id)"
+            >
+              {{ item.label }}
+            </a>
           </li>
         </ul>
       </nav>
@@ -169,7 +225,14 @@ onUnmounted(() => {
               :key="item.id"
               :style="{ animationDelay: `${index * 0.05}s` }"
             >
-              <a :href="item.href" class="mobile-nav-link" @click="closeMenu">
+              <a
+                href="#"
+                class="mobile-nav-link"
+                @click.prevent="
+                  scrollToSection(item.id);
+                  closeMenu();
+                "
+              >
                 {{ item.label }}
               </a>
             </li>
@@ -238,7 +301,7 @@ onUnmounted(() => {
   display: none;
 }
 
-@media (min-width: 1300px) {
+@media (min-width: 1340px) {
   .nav-desktop {
     display: flex;
   }
@@ -269,7 +332,7 @@ onUnmounted(() => {
   display: none;
 }
 
-@media (min-width: 1300px) {
+@media (min-width: 1340px) {
   .contact-desktop {
     display: flex;
     flex-direction: column;
@@ -335,7 +398,7 @@ onUnmounted(() => {
   backdrop-filter: blur(10px);
 }
 
-@media (min-width: 1300px) {
+@media (min-width: 1340px) {
   .burger {
     display: none;
   }

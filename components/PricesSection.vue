@@ -12,9 +12,8 @@ const priceCards: PriceCard[] = [
       "3 цвета окантовки: белый, серый, коричневый",
       "Возможен вариант без окантовки (пленка на отрез)",
     ],
-    prices: [
-      { value: "от 800 руб/м²" },
-    ],
+    prices: [{ value: "от 800 руб/м²" }],
+    badge: "Популярный",
     image: "img/prices-1.jpg",
   },
   {
@@ -24,6 +23,7 @@ const priceCards: PriceCard[] = [
       "Окантовка ткань ПВХ, цвет стандарт (белый, серый, коричневый)",
     ],
     prices: [{ value: "от 1500 руб/м²" }],
+    badge: "Популярный",
     image: "img/prices-2.jpg",
   },
   {
@@ -33,13 +33,38 @@ const priceCards: PriceCard[] = [
       "Окантовка ПВХ стандарт (коричневый, серый, белый)",
       "Монтаж включен",
     ],
-    prices: [
-      { label: "за м²", value: "от 1800 руб" },
-      { label: "Мягкое окно(ТПУ)", value: "от 2800 руб за м²" },
-      { label: "Мягкое окно(нестандартное)", value: "Цена договорная" },
-    ],
-    badge: "Популярный",
+    prices: [{ label: "за м²", value: "от 1800 руб" }],
     image: "img/prices-3.jpg",
+  },
+  {
+    title: "Москитная сетка",
+    description: [
+      "Окантовка ткань ПВХ",
+      "Цвет стандарт (коричневый, серый, белый)",
+    ],
+    prices: [{ label: "за м²", value: "от 1700 руб" }],
+    badge: "Популярный",
+    image: "img/prices-4.jpg",
+  },
+  {
+    title: "Мягкое окно «ТПУ»",
+    description: [
+      "Пленка ПВХ 700 мкм",
+      "Окантовка ПВХ стандарт (коричневый, серый, белый)",
+      "Монтаж включен",
+    ],
+    prices: [{ label: "за м²", value: "от 2800 руб" }],
+    image: "img/prices-5.jpg",
+  },
+  {
+    title: "Мягкое окно «Нестандартное»",
+    description: [
+      "Пленка ПВХ 700 мкм",
+      "Окантовка ПВХ стандарт (коричневый, серый, белый)",
+      "Монтаж включен",
+    ],
+    prices: [{ label: "за м²", value: "Цена договорная" }],
+    image: "img/prices-6.jpg",
   },
 ];
 
@@ -66,9 +91,8 @@ onMounted(() => {
       <div class="section-header" :class="{ visible: isVisible }">
         <h2 class="section-title">Прозрачные цены</h2>
         <p class="section-subtitle">
-          Мы работаем максимально прозрачно: нет ситуации, когда по телефону
-          называется одна цена, а при визите замерщика сумма оказывается выше.
-          Все расчёты честные, без скрытых условий и сюрпризов.
+          Работаем максимально прозрачно - все расчёты фиксируем на месте.
+          Никаких скрытых условий и неприятных сюрпризов.
         </p>
       </div>
 
@@ -79,7 +103,6 @@ onMounted(() => {
           class="price-card horizontal"
           :class="{ featured: card.badge, visible: isVisible }"
         >
-
           <div class="price-image" v-if="card.image">
             <img :src="card.image" :alt="card.title" />
           </div>
@@ -156,20 +179,34 @@ onMounted(() => {
   line-height: 1.6;
 }
 
+/* =========================
+   GRID
+========================= */
 .prices-grid {
   display: grid;
   gap: 2rem;
+  grid-template-columns: repeat(3, 1fr);
 }
 
-@media (min-width: 1024px) {
+/* 📱 планшеты */
+@media (max-width: 1024px) {
+  .prices-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* 📱 мобилки */
+@media (max-width: 600px) {
   .prices-grid {
     grid-template-columns: 1fr;
   }
 }
-
+/* =========================
+   CARD (VERTICAL)
+========================= */
 .price-card {
-  display: grid;
-  grid-template-columns: 300px 1fr;
+  display: flex;
+  flex-direction: column;
   background: var(--bg-card);
   border-radius: var(--radius-xl);
   border: 1px solid var(--border-light);
@@ -185,7 +222,7 @@ onMounted(() => {
 }
 
 .price-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-8px);
   box-shadow: var(--shadow-xl);
 }
 
@@ -193,9 +230,13 @@ onMounted(() => {
   border: 2px solid var(--accent);
 }
 
+/* =========================
+   IMAGE
+========================= */
 .price-image {
-  height: 100%;
-  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
 }
 
 .price-image img {
@@ -204,21 +245,26 @@ onMounted(() => {
   object-fit: cover;
 }
 
+/* =========================
+   CONTENT
+========================= */
 .price-content {
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem;
+  gap: 1.4rem;
+  flex: 1;
 }
 
 .price-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 1rem;
 }
 
 .price-title {
-  font-size: 2rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: var(--text-primary);
 }
@@ -230,12 +276,17 @@ onMounted(() => {
   font-size: 1.2rem;
   border-radius: 2rem;
   font-weight: 600;
+  white-space: nowrap;
 }
 
+/* =========================
+   PRICE BLOCK
+========================= */
 .price-values {
   display: flex;
-  gap: 1rem;
-  padding: 2rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1.5rem;
   background: var(--bg-tertiary);
   border-radius: var(--radius-md);
 }
@@ -243,6 +294,7 @@ onMounted(() => {
 .price-item {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .price-label {
@@ -257,11 +309,14 @@ onMounted(() => {
   font-family: "Montserrat", sans-serif;
 }
 
+/* =========================
+   FEATURES
+========================= */
 .price-features {
   list-style: none;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
 }
 
 .price-features li {
@@ -278,11 +333,18 @@ onMounted(() => {
   color: var(--accent);
 }
 
+/* =========================
+   BUTTON
+========================= */
 .price-card .btn {
-  width: fit-content;
   margin-top: auto;
+  width: 100%;
+  text-align: center;
 }
 
+/* =========================
+   ANIMATION
+========================= */
 @keyframes fadeInUp {
   to {
     opacity: 1;
@@ -290,6 +352,9 @@ onMounted(() => {
   }
 }
 
+/* =========================
+   DECOR
+========================= */
 .prices-decor {
   position: absolute;
   inset: 0;
@@ -317,21 +382,20 @@ onMounted(() => {
   right: -10rem;
 }
 
+/* =========================
+   RESPONSIVE
+========================= */
 @media (max-width: 768px) {
   .price-card {
-    grid-template-columns: 1fr;
+    max-width: 100%;
   }
 
   .price-image {
-    height: 18rem;
-  }
-
-  .price-features {
-    grid-template-columns: 1fr;
+    height: 180px;
   }
 
   .price-title {
-    font-size: 1.8rem;
+    font-size: 1.6rem;
   }
 
   .price-value {

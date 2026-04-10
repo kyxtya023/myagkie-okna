@@ -55,10 +55,8 @@ const faqItems: FAQItem[] = [
       <p class="note"><strong>При несоблюдении условий выезд оплачивается отдельно:</strong></p>
       <ul>
         <li>До 50 км — <strong>3000 руб</strong></li>
-        <li>50–80 км — <strong>4000 руб</strong></li>
-        <li>80–130 км — <strong>5000 руб</strong></li>
+        <li>От 50 км — <strong>Цена договорная</strong></li>
       </ul>
-      <p>Замер осуществляется в течение <span class="highlight">1–2 дней</span></p>
     `,
   },
   {
@@ -74,7 +72,6 @@ const faqItems: FAQItem[] = [
       <p class="note"><strong>Важная информация:</strong></p>
       <ul>
         <li>Минимальная сумма монтажа — <strong>15000 руб</strong></li>
-        <li>Монтаж на кирпич/бетон/бревно — согласуется отдельно</li>
       </ul>
     `,
   },
@@ -158,10 +155,6 @@ const faqItems: FAQItem[] = [
 
     <p class="note">
       <strong>Совет:</strong> просто дождитесь высыхания или прогрейте помещение
-    </p>
-
-    <p class="danger">
-      <strong>Запрещено:</strong> использовать бензин, спирты и агрессивную химию
     </p>
   `,
   },

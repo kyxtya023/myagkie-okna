@@ -7,14 +7,14 @@ const navLinks = [
   { label: "Почему мы", href: "#why-us" },
   { label: "Преимущества", href: "#advantages" },
   { label: "Галерея", href: "#gallery" },
-  { label: "FAQ", href: "#faq" },
+  { label: "Частые вопросы", href: "#faq" },
 ];
 
 const contactInfo = {
   phone: "+7 (966) 126-66-06",
   email: "plenochnieokna@mail.ru",
-  address: "Московская область, Королёв, Пионерская улица, 1А",
-  schedule: "Ежедневно: 10:00-19:00",
+  address: "Московская область, Королёв, Пионерская улица, 1А ст.2",
+  schedule: "Ежедневно: 9:00-21:00",
 };
 </script>
 
@@ -50,7 +50,7 @@ const contactInfo = {
           </a>
           <p class="footer-description">
             Производство и монтаж мягких окон из гибкого ПВХ для веранд, беседок
-            и террас. Качественные материалы, честные цены, гарантия до 5 лет.
+            и террас. Качественные материалы, честные цены.
           </p>
         </div>
 
@@ -154,7 +154,6 @@ const contactInfo = {
   border-top: 1px solid var(--border-light);
 }
 
-/* Grid */
 .footer-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(24rem, 1fr));
@@ -168,7 +167,6 @@ const contactInfo = {
   }
 }
 
-/* Brand */
 .footer-brand {
   max-width: 35rem;
 }

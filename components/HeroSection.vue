@@ -12,7 +12,7 @@ const advantages = [
   {
     icon: "speed",
     title: "Быстрый монтаж",
-    description: "Установка за 1-2 дня",
+    description: "Установка за 1 день",
   },
   {
     icon: "price",
@@ -47,7 +47,7 @@ onMounted(() => {
       <div class="hero-content" :class="{ visible: isVisible }">
         <div class="hero-badge">
           <span class="badge-dot"></span>
-          Работаем по Москве и МО
+          Ежедневно: 9:00-21:00
         </div>
 
         <h1 class="hero-title">
@@ -78,7 +78,7 @@ onMounted(() => {
             </svg>
             Рассчитать стоимость
           </a>
-          <a href="tel:+79991234567" class="btn btn-secondary">
+          <a href="tel:+79661266606" class="btn btn-secondary">
             <svg
               width="20"
               height="20"
@@ -119,7 +119,7 @@ onMounted(() => {
               <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
               <polyline points="22 4 12 14.01 9 11.01" />
             </svg>
-            <span>Гарантия 5 лет</span>
+            <span>Работаем по Москве и МО</span>
           </div>
           <div class="visual-float visual-float-2">
             <svg
@@ -133,7 +133,7 @@ onMounted(() => {
               <circle cx="12" cy="12" r="10" />
               <polyline points="12 6 12 12 16 14" />
             </svg>
-            <span>Монтаж за 1-2 дня</span>
+            <span>Монтаж за 1 день</span>
           </div>
         </div>
       </div>

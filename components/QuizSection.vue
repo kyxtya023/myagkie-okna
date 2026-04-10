@@ -62,9 +62,8 @@ const steps: QuizStep[] = [
     question: 'Какой комплект вас интересует?',
     type: 'select',
     options: [
-      { value: 'эконом', label: 'Эконом', description: 'Пленка на отрез от 1200 руб/м²' },
-      { value: 'самомонтаж', label: 'Самомонтаж', description: 'Готовый комплект от 1800 руб/м²' },
-      { value: 'под ключ', label: 'Под ключ', description: 'С установкой от 2500 руб/м²' },
+      { value: 'самомонтаж', label: 'Самомонтаж' },
+      { value: 'под ключ', label: 'Под ключ' },
       { value: 'не определился', label: 'Не определился', description: 'Нужна консультация' }
     ]
   },
