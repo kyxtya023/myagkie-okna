@@ -222,7 +222,7 @@ onMounted(() => {
   <section class="quiz section" id="quiz">
     <div class="container">
       <div class="quiz-wrapper" :class="{ visible: isVisible }">
-        <!-- Success State -->
+
         <Transition name="fade" mode="out-in">
           <div v-if="isSubmitted" class="quiz-success">
             <div class="success-icon">
@@ -236,15 +236,12 @@ onMounted(() => {
             <button class="btn btn-secondary" @click="resetQuiz">Отправить ещё</button>
           </div>
 
-          <!-- Quiz Form -->
           <div v-else class="quiz-content">
-            <!-- Header -->
             <div class="quiz-header">
               <h2 class="quiz-title">Рассчитайте стоимость</h2>
               <p class="quiz-subtitle">Ответьте на несколько вопросов и получите точный расчёт</p>
             </div>
 
-            <!-- Progress -->
             <div class="quiz-progress">
               <div class="progress-bar">
                 <div class="progress-fill" :style="{ width: `${progress}%` }"></div>
@@ -252,12 +249,10 @@ onMounted(() => {
               <span class="progress-text">Шаг {{ currentStep }} из {{ totalSteps }}</span>
             </div>
 
-            <!-- Step Content -->
             <Transition name="slide" mode="out-in">
               <div :key="currentStep" class="quiz-step">
                 <h3 class="step-question">{{ currentStepData.question }}</h3>
 
-                <!-- Options -->
                 <div v-if="currentStepData.type === 'select' || currentStepData.type === 'radio'" class="step-options">
                   <button
                     v-for="option in currentStepData.options"
@@ -276,7 +271,6 @@ onMounted(() => {
                   </button>
                 </div>
 
-                <!-- Contact Form -->
                 <div v-if="currentStepData.type === 'contact'" class="step-contact">
                   <div class="form-group">
                     <label for="quiz-name">Ваше имя *</label>
@@ -309,12 +303,10 @@ onMounted(() => {
                   </div>
                 </div>
 
-                <!-- Error -->
                 <p v-if="submitError" class="submit-error">{{ submitError }}</p>
               </div>
             </Transition>
 
-            <!-- Navigation -->
             <div class="quiz-nav">
               <button
                 v-if="currentStep > 1"
@@ -354,7 +346,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Decorative -->
     <div class="quiz-decor" aria-hidden="true">
       <div class="decor-circle decor-circle-1"></div>
       <div class="decor-circle decor-circle-2"></div>
@@ -395,7 +386,6 @@ onMounted(() => {
   }
 }
 
-/* Header */
 .quiz-header {
   text-align: center;
   margin-bottom: 3rem;
@@ -412,7 +402,6 @@ onMounted(() => {
   margin: 0;
 }
 
-/* Progress */
 .quiz-progress {
   display: flex;
   align-items: center;
@@ -442,7 +431,6 @@ onMounted(() => {
   white-space: nowrap;
 }
 
-/* Step */
 .quiz-step {
   min-height: 30rem;
 }
@@ -455,7 +443,6 @@ onMounted(() => {
   text-align: center;
 }
 
-/* Options */
 .step-options {
   display: grid;
   gap: 1.5rem;
@@ -531,7 +518,6 @@ onMounted(() => {
   color: var(--text-muted);
 }
 
-/* Contact Form */
 .step-contact {
   display: flex;
   flex-direction: column;
@@ -589,7 +575,6 @@ onMounted(() => {
   text-align: center;
 }
 
-/* Navigation */
 .quiz-nav {
   display: flex;
   justify-content: space-between;
@@ -604,7 +589,6 @@ onMounted(() => {
   cursor: not-allowed;
 }
 
-/* Success */
 .quiz-success {
   text-align: center;
   padding: 4rem 2rem;
@@ -635,7 +619,6 @@ onMounted(() => {
   margin-bottom: 3rem;
 }
 
-/* Decorative */
 .quiz-decor {
   position: absolute;
   inset: 0;
@@ -664,7 +647,6 @@ onMounted(() => {
   right: -15rem;
 }
 
-/* Transitions */
 .slide-enter-active,
 .slide-leave-active {
   transition: all 0.3s ease;

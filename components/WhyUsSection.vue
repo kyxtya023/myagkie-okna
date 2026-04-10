@@ -105,7 +105,6 @@ onMounted(() => {
         </p>
       </div>
 
-      <!-- Cards Grid -->
       <div class="why-us-grid">
         <article
           v-for="(card, index) in cards"
@@ -116,56 +115,56 @@ onMounted(() => {
           @mouseenter="activeIndex = index"
         >
           <div class="card-icon">
-            <!-- Measure -->
+
             <svg v-if="card.icon === 'measure'" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :aria-label="card.alt">
               <path d="M21 3H3v18h18V3z"/>
               <path d="M21 9H15M21 15H15M9 3v18"/>
             </svg>
-            <!-- Team -->
+
             <svg v-else-if="card.icon === 'team'" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :aria-label="card.alt">
               <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
               <circle cx="9" cy="7" r="4"/>
               <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
               <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
             </svg>
-            <!-- Install -->
+
             <svg v-else-if="card.icon === 'install'" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :aria-label="card.alt">
               <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
             </svg>
-            <!-- Price -->
+
             <svg v-else-if="card.icon === 'price'" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :aria-label="card.alt">
               <circle cx="12" cy="12" r="10"/>
               <path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8"/>
               <path d="M12 6v2m0 8v2"/>
             </svg>
-            <!-- Warranty -->
+
             <svg v-else-if="card.icon === 'warranty'" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :aria-label="card.alt">
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               <path d="M9 12l2 2 4-4"/>
             </svg>
-            <!-- Delivery -->
+
             <svg v-else-if="card.icon === 'delivery'" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :aria-label="card.alt">
               <rect x="1" y="3" width="15" height="13"/>
               <polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/>
               <circle cx="5.5" cy="18.5" r="2.5"/>
               <circle cx="18.5" cy="18.5" r="2.5"/>
             </svg>
-            <!-- Quality -->
+
             <svg v-else-if="card.icon === 'quality'" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :aria-label="card.alt">
               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
             </svg>
-            <!-- Speed -->
+
             <svg v-else-if="card.icon === 'speed'" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :aria-label="card.alt">
               <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
             </svg>
-            <!-- Factory -->
+
             <svg v-else-if="card.icon === 'factory'" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :aria-label="card.alt">
               <path d="M2 20h20"/>
               <path d="M5 20V8l4 4V8l4 4V4h6v16"/>
               <path d="M19 12h-2"/>
               <path d="M19 8h-2"/>
             </svg>
-            <!-- Individual -->
+
             <svg v-else width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" :aria-label="card.alt">
               <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
               <circle cx="12" cy="7" r="4"/>
@@ -182,7 +181,7 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Decorative -->
+
     <div class="why-us-decor" aria-hidden="true">
       <div class="decor-line decor-line-1"></div>
       <div class="decor-line decor-line-2"></div>
@@ -221,7 +220,7 @@ onMounted(() => {
   color: var(--text-secondary);
 }
 
-/* Grid */
+
 .why-us-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
@@ -240,7 +239,6 @@ onMounted(() => {
   }
 }
 
-/* Card */
 .why-card {
   position: relative;
   display: flex;
@@ -288,7 +286,6 @@ onMounted(() => {
   border-color: var(--accent);
 }
 
-/* Glow Effect */
 .card-glow {
   position: absolute;
   top: 0;
@@ -305,7 +302,6 @@ onMounted(() => {
   opacity: 1;
 }
 
-/* Icon */
 .card-icon {
   display: flex;
   align-items: center;
@@ -323,7 +319,6 @@ onMounted(() => {
   transform: scale(1.1) rotate(-5deg);
 }
 
-/* Content */
 .card-title {
   font-size: 1.8rem;
   font-weight: 700;
@@ -338,7 +333,6 @@ onMounted(() => {
   margin: 0;
 }
 
-/* Decorative */
 .why-us-decor {
   position: absolute;
   inset: 0;

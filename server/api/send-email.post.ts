@@ -22,7 +22,7 @@ export default defineEventHandler(async (event): Promise<EmailResponse> => {
   const transporter = nodemailer.createTransport({
     host: config.mailHost,
     port: parseInt(config.mailPort),
-    secure: false,
+    secure: true,
     auth: {
       user: config.mailUser,
       pass: config.mailPass

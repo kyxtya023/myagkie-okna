@@ -47,12 +47,12 @@ onMounted(() => {
       <div class="hero-content" :class="{ visible: isVisible }">
         <div class="hero-badge">
           <span class="badge-dot"></span>
-          Производство и монтаж
+          Работаем по Москве и МО
         </div>
 
         <h1 class="hero-title">
           Мягкие окна из гибкого ПВХ
-          <span class="title-accent">от 799₽/м²</span>
+          <span class="title-accent">от 800₽/м²</span>
         </h1>
 
         <p class="hero-subtitle">
@@ -101,7 +101,7 @@ onMounted(() => {
         <div class="visual-card">
           <div class="visual-image">
             <img
-              src="public/img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg"
+              src="public/img/hero.jpg"
               alt="Веранда с мягкими окнами из ПВХ"
               loading="eager"
             />
@@ -150,7 +150,6 @@ onMounted(() => {
             :style="{ animationDelay: `${0.4 + index * 0.1}s` }"
           >
             <div class="advantage-icon">
-              <!-- Бесплатный замер -->
               <svg
                 v-if="advantage.icon === 'measure'"
                 width="32"
@@ -165,7 +164,6 @@ onMounted(() => {
                 <path d="M5 9l4 4" />
               </svg>
 
-              <!-- Скорость -->
               <svg
                 v-else-if="advantage.icon === 'speed'"
                 width="32"
@@ -177,8 +175,6 @@ onMounted(() => {
               >
                 <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
               </svg>
-
-              <!-- Цена -->
               <svg
                 v-else-if="advantage.icon === 'price'"
                 width="32"
@@ -193,7 +189,6 @@ onMounted(() => {
                 <path d="M12 6v2m0 8v2" />
               </svg>
 
-              <!-- Бесплатная доставка -->
               <svg
                 v-else-if="advantage.icon === 'delivery'"
                 width="32"
@@ -218,7 +213,6 @@ onMounted(() => {
       </div>
     </div>
 
-    <!-- Wave Divider -->
     <div class="wave-divider bottom" aria-hidden="true">
       <svg viewBox="0 0 1200 120" preserveAspectRatio="none">
         <path
@@ -238,7 +232,6 @@ onMounted(() => {
   overflow: hidden;
 }
 
-/* Background Pattern */
 .hero-pattern {
   position: absolute;
   top: 0;
@@ -290,7 +283,6 @@ onMounted(() => {
   opacity: 0.5;
 }
 
-/* Container */
 .hero-container {
   display: grid;
   grid-template-columns: 1fr;
@@ -313,7 +305,6 @@ onMounted(() => {
   }
 }
 
-/* Content */
 .hero-content {
   opacity: 0;
   transform: translateY(30px);
@@ -378,7 +369,6 @@ onMounted(() => {
   gap: 1.5rem;
 }
 
-/* Visual */
 .hero-visual {
   position: relative;
   opacity: 0;
@@ -422,7 +412,6 @@ onMounted(() => {
   );
 }
 
-/* Floating Cards */
 .visual-float {
   position: absolute;
   display: flex;
@@ -466,7 +455,6 @@ onMounted(() => {
   }
 }
 
-/* Advantages */
 .hero-advantages {
   margin-top: 6rem;
   opacity: 0;
@@ -530,7 +518,6 @@ onMounted(() => {
   margin: 0;
 }
 
-/* Wave */
 .wave-divider.bottom svg path {
   fill: var(--bg-secondary);
 }

@@ -2,6 +2,7 @@
 import AppHeader from "~/components/AppHeader.vue";
 import AppFooter from "~/components/AppFooter.vue";
 import FloatingContacts from "~/components/FloatingContacts.vue";
+import DropIn from "~/components/Drop-in.vue";
 </script>
 
 <template>
@@ -11,6 +12,7 @@ import FloatingContacts from "~/components/FloatingContacts.vue";
       <slot />
     </main>
     <FloatingContacts />
+    <DropIn/>
     <AppFooter />
   </div>
 </template>

@@ -11,24 +11,17 @@ const navLinks = [
 ];
 
 const contactInfo = {
-  phone: "+7 (999) 123-45-67",
-  email: "info@soft-windows.ru",
-  address: "Москва, ул. Примерная, 1",
-  schedule: "Пн-Вс: 09:00-21:00",
+  phone: "+7 (966) 126-66-06",
+  email: "plenochnieokna@mail.ru",
+  address: "Московская область, Королёв, Пионерская улица, 1А",
+  schedule: "Ежедневно: 10:00-19:00",
 };
-
-const socialLinks = [
-  { icon: "lucide:instagram", label: "Instagram", href: "#" },
-  { icon: "lucide:message-circle", label: "Telegram", href: "#" },
-  { icon: "lucide:phone", label: "WhatsApp", href: "#" },
-];
 </script>
 
 <template>
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
-        <!-- Logo & Description -->
         <div class="footer-brand">
           <a href="/" class="footer-logo">
             <div class="logo-icon">
@@ -59,20 +52,8 @@ const socialLinks = [
             Производство и монтаж мягких окон из гибкого ПВХ для веранд, беседок
             и террас. Качественные материалы, честные цены, гарантия до 5 лет.
           </p>
-          <div class="footer-social">
-            <a
-              v-for="social in socialLinks"
-              :key="social.label"
-              :href="social.href"
-              :aria-label="social.label"
-              class="social-link"
-            >
-              <Icon :name="social.icon" size="20" />
-            </a>
-          </div>
         </div>
 
-        <!-- Navigation -->
         <nav class="footer-nav" aria-label="Навигация в подвале">
           <h4 class="footer-title">Навигация</h4>
           <ul class="footer-links">
@@ -82,7 +63,6 @@ const socialLinks = [
           </ul>
         </nav>
 
-        <!-- Contact -->
         <div class="footer-contact">
           <h4 class="footer-title">Контакты</h4>
           <ul class="contact-list">
@@ -109,7 +89,6 @@ const socialLinks = [
           </ul>
         </div>
 
-        <!-- CTA -->
         <div class="footer-cta">
           <h4 class="footer-title">Получить расчёт</h4>
           <p>
@@ -122,7 +101,6 @@ const socialLinks = [
         </div>
       </div>
 
-      <!-- Bottom -->
       <div class="footer-bottom">
         <p class="copyright">
           &copy; {{ currentYear }} МягкиеОкна. Все права защищены.
@@ -162,7 +140,6 @@ const socialLinks = [
       </div>
     </div>
 
-    <!-- Decorative -->
     <div class="footer-decor" aria-hidden="true">
       <div class="decor-line"></div>
     </div>
@@ -222,32 +199,6 @@ const socialLinks = [
   margin-bottom: 2rem;
 }
 
-.footer-social {
-  display: flex;
-  gap: 1rem;
-}
-
-.social-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 4rem;
-  height: 4rem;
-  background: var(--bg-tertiary);
-  border: 1px solid var(--border-light);
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-  transition: all var(--transition-fast);
-}
-
-.social-link:hover {
-  background: var(--accent);
-  border-color: var(--accent);
-  color: white;
-  transform: translateY(-3px);
-}
-
-/* Navigation */
 .footer-title {
   font-size: 1.6rem;
   font-weight: 700;
@@ -274,7 +225,6 @@ const socialLinks = [
   padding-left: 0.5rem;
 }
 
-/* Contact */
 .contact-list {
   list-style: none;
 }
@@ -303,7 +253,6 @@ const socialLinks = [
   color: var(--accent);
 }
 
-/* CTA */
 .footer-cta {
   padding: 2.5rem;
   background: var(--bg-glass);
@@ -322,7 +271,6 @@ const socialLinks = [
   width: 100%;
 }
 
-/* Bottom */
 .footer-bottom {
   display: flex;
   flex-wrap: wrap;
@@ -354,7 +302,6 @@ const socialLinks = [
   color: var(--accent);
 }
 
-/* Decorative */
 .footer-decor {
   position: absolute;
   top: 0;
@@ -415,12 +362,11 @@ const socialLinks = [
   transform: rotate(10deg) scale(1.1);
 }
 
-/* Tooltip */
 .developer-tooltip {
   position: absolute;
   bottom: 130%;
-  left: 0;
-  min-width: 220px;
+  right: 0;
+  min-width: 20rem;
   padding: 1.2rem;
 
   background: var(--bg-glass);
@@ -435,16 +381,21 @@ const socialLinks = [
   z-index: 10;
 }
 
-/* стрелка */
 .developer-tooltip::after {
   content: "";
   position: absolute;
   top: 100%;
-  left: 20px;
+  right: 20px;
 
   border-width: 6px;
   border-style: solid;
   border-color: var(--border-light) transparent transparent transparent;
+}
+
+@media (max-width: 480px) {
+  .developer-tooltip {
+    right: 0;
+  }
 }
 
 .developer-credit:hover .developer-tooltip {
@@ -453,7 +404,6 @@ const socialLinks = [
   transform: translateY(0);
 }
 
-/* контент */
 .tooltip-title {
   font-size: 1.2rem;
   font-weight: 600;

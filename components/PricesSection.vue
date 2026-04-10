@@ -6,54 +6,40 @@ const isVisible = ref(false);
 
 const priceCards: PriceCard[] = [
   {
-    title: "Комплект «Эконом»",
+    title: "Мягкое окно «Эконом»",
     description: [
-      "Пленка 700 мкм, морозостойкая до -39°C",
-      "5 цветов окантовки: белый, серый, коричневый, черный, бежевый",
+      "Пленка ПВХ 500 мкм",
+      "3 цвета окантовки: белый, серый, коричневый",
       "Возможен вариант без окантовки (пленка на отрез)",
     ],
     prices: [
-      { value: "от 1600 руб/м²" },
-      { value: "1200 руб/м²", label: "Без окантовки" },
+      { value: "от 800 руб/м²" },
     ],
-    extra: ["Без окантовки (пленка на отрез)"],
-    image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
+    image: "img/prices-1.jpg",
   },
   {
-    title: "Комплект «Самомонтаж»",
+    title: "Мягкое окно «Стандарт»",
     description: [
-      "Пленка 700 мкм, морозостойкая до -39°C",
-      "Окантовка ПВХ (коричневый)",
-      "Пластиковая поворотная скоба по бокам",
-      "Верх — саморезы",
-      "Низ — без крепления",
-      "Без монтажа",
+      "Пленка ПВХ 700 мкм",
+      "Окантовка ткань ПВХ, цвет стандарт (белый, серый, коричневый)",
     ],
-    prices: [{ value: "от 1800 руб/м²" }],
-    extra: [
-      "Цветная окантовка (серый, белый, бежевый, черный) — 100 руб/м²",
-      "Нижнее крепление — 200 руб/шт (люверс + скоба)",
-    ],
-    image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
+    prices: [{ value: "от 1500 руб/м²" }],
+    image: "img/prices-2.jpg",
   },
   {
-    title: "Под ключ",
+    title: "Мягкое окно «Тонированное»",
     description: [
-      "Пленка 700 мкм, морозостойкая до -39°C",
-      "Окантовка ПВХ (коричневый)",
-      "Поворотные скобы",
-      "Верх — саморезы",
-      "Низ — без крепления",
+      "Пленка ПВХ 700 мкм тонированная",
+      "Окантовка ПВХ стандарт (коричневый, серый, белый)",
       "Монтаж включен",
     ],
     prices: [
-      { label: "до 10 м²", value: "от 35000 руб" },
-      { label: "10–20 м²", value: "от 50000 руб" },
-      { label: "от 20 м²", value: "от 2500 руб/м²" },
+      { label: "за м²", value: "от 1800 руб" },
+      { label: "Мягкое окно(ТПУ)", value: "от 2800 руб за м²" },
+      { label: "Мягкое окно(нестандартное)", value: "Цена договорная" },
     ],
-    extra: ["Молнии для входной группы — 1300 руб/пог.м"],
     badge: "Популярный",
-    image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
+    image: "img/prices-3.jpg",
   },
 ];
 
@@ -93,12 +79,11 @@ onMounted(() => {
           class="price-card horizontal"
           :class="{ featured: card.badge, visible: isVisible }"
         >
-          <!-- Image -->
+
           <div class="price-image" v-if="card.image">
             <img :src="card.image" :alt="card.title" />
           </div>
 
-          <!-- Content -->
           <div class="price-content">
             <div class="price-header">
               <h3 class="price-title">{{ card.title }}</h3>
@@ -107,7 +92,6 @@ onMounted(() => {
               </div>
             </div>
 
-            <!-- Prices -->
             <div class="price-values">
               <div
                 v-for="price in card.prices"
@@ -121,21 +105,18 @@ onMounted(() => {
               </div>
             </div>
 
-            <!-- Features -->
             <ul class="price-features compact">
               <li v-for="(desc, i) in card.description" :key="i">
                 {{ desc }}
               </li>
             </ul>
 
-            <!-- CTA -->
             <a href="#quiz" class="btn btn-primary"> Рассчитать </a>
           </div>
         </article>
       </div>
     </div>
 
-    <!-- Decorative Elements -->
     <div class="prices-decor" aria-hidden="true">
       <div class="decor-blob decor-blob-1"></div>
       <div class="decor-blob decor-blob-2"></div>
@@ -150,7 +131,6 @@ onMounted(() => {
   overflow: hidden;
 }
 
-/* Header */
 .section-header {
   text-align: center;
   margin-bottom: 5rem;
@@ -176,7 +156,6 @@ onMounted(() => {
   line-height: 1.6;
 }
 
-/* Grid */
 .prices-grid {
   display: grid;
   gap: 2rem;
@@ -188,9 +167,6 @@ onMounted(() => {
   }
 }
 
-/* =========================
-   CARD (ГОРИЗОНТАЛЬНАЯ)
-========================= */
 .price-card {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -213,14 +189,10 @@ onMounted(() => {
   box-shadow: var(--shadow-xl);
 }
 
-/* Featured */
 .price-card.featured {
   border: 2px solid var(--accent);
 }
 
-/* =========================
-   IMAGE
-========================= */
 .price-image {
   height: 100%;
   position: relative;
@@ -232,9 +204,6 @@ onMounted(() => {
   object-fit: cover;
 }
 
-/* =========================
-   CONTENT
-========================= */
 .price-content {
   padding: 2rem;
   display: flex;
@@ -242,7 +211,6 @@ onMounted(() => {
   gap: 1.2rem;
 }
 
-/* Header */
 .price-header {
   display: flex;
   justify-content: space-between;
@@ -255,7 +223,6 @@ onMounted(() => {
   color: var(--text-primary);
 }
 
-/* Badge */
 .price-badge {
   padding: 0.4rem 1.2rem;
   background: var(--gradient-primary);
@@ -265,9 +232,6 @@ onMounted(() => {
   font-weight: 600;
 }
 
-/* =========================
-   PRICES
-========================= */
 .price-values {
   display: flex;
   gap: 1rem;
@@ -293,9 +257,6 @@ onMounted(() => {
   font-family: "Montserrat", sans-serif;
 }
 
-/* =========================
-   FEATURES (КОМПАКТ)
-========================= */
 .price-features {
   list-style: none;
   display: grid;
@@ -317,17 +278,11 @@ onMounted(() => {
   color: var(--accent);
 }
 
-/* =========================
-   BUTTON
-========================= */
 .price-card .btn {
   width: fit-content;
   margin-top: auto;
 }
 
-/* =========================
-   ANIMATION
-========================= */
 @keyframes fadeInUp {
   to {
     opacity: 1;
@@ -335,9 +290,6 @@ onMounted(() => {
   }
 }
 
-/* =========================
-   DECOR
-========================= */
 .prices-decor {
   position: absolute;
   inset: 0;
@@ -365,9 +317,6 @@ onMounted(() => {
   right: -10rem;
 }
 
-/* =========================
-   RESPONSIVE
-========================= */
 @media (max-width: 768px) {
   .price-card {
     grid-template-columns: 1fr;

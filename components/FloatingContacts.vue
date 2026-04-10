@@ -9,7 +9,7 @@
       <!-- Links -->
       <div class="contacts-list">
         <a
-          href="https://max.ru"
+          href="https://max.ru/u/f9LHodD0cOKBd9bCVDPxUVzgZ7EjWbR6d0srsFUdUQEopSdmLBuKdn9z-YA"
           target="_blank"
           class="contact-item"
         >
@@ -18,7 +18,7 @@
         </a>
 
         <a
-          href="https://t.me/your_username"
+          href="https://t.me/plenochnyeOkna"
           target="_blank"
           class="contact-item"
         >
@@ -27,7 +27,7 @@
         </a>
 
         <a
-          href="tel:+79991234567"
+          href="tel:+79661266606"
           class="contact-item"
         >
           <Icon name="lucide:phone" size="20" />
@@ -46,12 +46,10 @@
   z-index: 999;
 }
 
-/* Обертка */
 .contacts-wrapper {
   position: relative;
 }
 
-/* Кнопка */
 .contacts-trigger {
   width: 5rem;
   height: 5rem;
@@ -74,7 +72,6 @@
   transform: translateY(-3px) scale(1.05);
 }
 
-/* Список */
 .contacts-list {
   position: absolute;
   bottom: 110%;
@@ -92,14 +89,12 @@
   transition: all var(--transition-fast);
 }
 
-/* Показ при наведении */
 .contacts-wrapper:hover .contacts-list {
   opacity: 1;
   visibility: visible;
   transform: translateY(0);
 }
 
-/* Элемент */
 .contact-item {
   display: flex;
   align-items: center;

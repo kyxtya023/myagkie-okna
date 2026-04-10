@@ -1,92 +1,128 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import type { GalleryImage, GalleryCategory } from '~/types'
+import { ref, onMounted } from "vue";
+import type { GalleryImage, GalleryCategory } from "~/types";
 
-const isVisible = ref(false)
-const activeCategory = ref('all')
-const visibleCount = ref(6)
-const lightboxImage = ref<GalleryImage | null>(null)
+const isVisible = ref(false);
+const isSwitching = ref(false);
 
 const categories: GalleryCategory[] = [
-  { id: 'all', name: 'Все работы' },
-  { id: 'verandas', name: 'Веранды' },
-  { id: 'balconies', name: 'Балконы' },
-  { id: 'gazebos', name: 'Беседки' }
-]
+  { id: "gazebos", name: "Беседки" },
+  { id: "verandas-and-terraces", name: "Веранды и террасы" },
+  { id: "other", name: "Другое" },
+];
 
-const allImages: GalleryImage[] = [
-  { id: 1, src: 'img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg', alt: 'Мягкие окна на веранде загородного дома', category: 'verandas' },
-  { id: 2, src: 'img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg', alt: 'Остекление веранды ПВХ пленкой', category: 'verandas' },
-  { id: 3, src: 'img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg', alt: 'Мягкие окна на балконе', category: 'balconies' },
-  { id: 4, src: 'img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg', alt: 'Беседка с мягкими окнами', category: 'gazebos' },
-  { id: 5, src: 'img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg', alt: 'Панорамные мягкие окна на террасе', category: 'verandas' },
-  { id: 6, src: 'img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg', alt: 'Летняя беседка с защитой от дождя', category: 'gazebos' },
-  { id: 7, src: 'img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg', alt: 'Балкон с прозрачными ПВХ окнами', category: 'balconies' },
-  { id: 8, src: 'img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg', alt: 'Веранда ресторана с мягким остеклением', category: 'verandas' },
-  { id: 9, src: 'img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg', alt: 'Беседка у бассейна', category: 'gazebos' },
-  { id: 10, src: 'img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg', alt: 'Зимняя веранда с мягкими окнами', category: 'verandas' },
-  { id: 11, src: 'img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg', alt: 'Панорамный балкон', category: 'balconies' },
-  { id: 12, src: 'img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg', alt: 'Садовая беседка', category: 'gazebos' }
-]
+const activeCategory = ref("gazebos");
 
-const filteredImages = computed(() => {
-  if (activeCategory.value === 'all') {
-    return allImages
+// данные
+const images = ref<GalleryImage[]>([]);
+const offset = ref(0);
+const limit = 6;
+const hasMore = ref(true);
+const loading = ref(false);
+
+const lightboxImage = ref<GalleryImage | null>(null);
+
+const loadImages = async (reset = false) => {
+  if (loading.value) return;
+
+  loading.value = true;
+
+  try {
+    let newImages: GalleryImage[] = [];
+
+    const res = await $fetch<{
+      images: GalleryImage[];
+      hasMore: boolean;
+    }>("/api/gallery", {
+      query: {
+        category: activeCategory.value,
+        offset: reset ? 0 : offset.value,
+        limit,
+      },
+    });
+
+    newImages = res.images || [];
+
+    if (reset) {
+      images.value = newImages; // 👈 заменяем ТОЛЬКО после загрузки
+      offset.value = limit;
+    } else {
+      images.value.push(...newImages);
+      offset.value += limit;
+    }
+
+    hasMore.value = res.hasMore;
+  } catch (e) {
+    console.error("Ошибка загрузки галереи:", e);
+  } finally {
+    loading.value = false;
   }
-  return allImages.filter(img => img.category === activeCategory.value)
-})
+};
 
-const displayedImages = computed(() => {
-  return filteredImages.value.slice(0, visibleCount.value)
-})
+// смена категории
+const setCategory = async (categoryId: string) => {
+  if (categoryId === activeCategory.value) return;
 
-const hasMore = computed(() => {
-  return visibleCount.value < filteredImages.value.length
-})
+  isSwitching.value = true;
 
-const setCategory = (categoryId: string) => {
-  activeCategory.value = categoryId
-  visibleCount.value = 6
-}
+  await new Promise((resolve) => setTimeout(resolve, 200)); // fade-out
 
+  activeCategory.value = categoryId;
+  offset.value = 0;
+
+  await loadImages(true);
+
+  isSwitching.value = false;
+};
+
+// загрузить ещё
 const loadMore = () => {
-  visibleCount.value += 6
-}
+  loadImages();
+};
 
 const openLightbox = (image: GalleryImage) => {
-  lightboxImage.value = image
-  document.body.style.overflow = 'hidden'
-}
+  lightboxImage.value = image;
+  document.body.style.overflow = "hidden";
+};
 
 const closeLightbox = () => {
-  lightboxImage.value = null
-  document.body.style.overflow = ''
-}
+  lightboxImage.value = null;
+  document.body.style.overflow = "";
+};
 
 const navigateLightbox = (direction: number) => {
-  if (!lightboxImage.value) return
-  const currentIndex = filteredImages.value.findIndex(img => img.id === lightboxImage.value!.id)
-  let newIndex = currentIndex + direction
-  if (newIndex < 0) newIndex = filteredImages.value.length - 1
-  if (newIndex >= filteredImages.value.length) newIndex = 0
-  lightboxImage.value = filteredImages.value[newIndex]
-}
+  if (!lightboxImage.value) return;
 
+  const currentIndex = images.value.findIndex(
+    (img) => img.id === lightboxImage.value!.id,
+  );
+
+  let newIndex = currentIndex + direction;
+
+  if (newIndex < 0) newIndex = images.value.length - 1;
+  if (newIndex >= images.value.length) newIndex = 0;
+
+  lightboxImage.value = images.value[newIndex];
+};
+
+// анимация появления
 onMounted(() => {
+  loadImages(true);
+
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          isVisible.value = true
+          isVisible.value = true;
         }
-      })
+      });
     },
-    { threshold: 0.1 }
-  )
+    { threshold: 0.1 },
+  );
 
-  const section = document.getElementById('gallery')
-  if (section) observer.observe(section)
-})
+  const section = document.getElementById("gallery");
+  if (section) observer.observe(section);
+});
 </script>
 
 <template>
@@ -95,11 +131,11 @@ onMounted(() => {
       <div class="section-header" :class="{ visible: isVisible }">
         <h2 class="section-title">Наши работы</h2>
         <p class="section-subtitle">
-          Посмотрите примеры выполненных проектов по остеклению веранд, беседок и балконов
+          Посмотрите примеры выполненных проектов по остеклению веранд, беседок
+          и балконов
         </p>
       </div>
 
-      <!-- Categories -->
       <div class="gallery-categories" :class="{ visible: isVisible }">
         <button
           v-for="category in categories"
@@ -112,10 +148,9 @@ onMounted(() => {
         </button>
       </div>
 
-      <!-- Grid -->
-      <div class="gallery-grid">
+      <div class="gallery-grid" :class="{ switching: isSwitching }">
         <article
-          v-for="(image, index) in displayedImages"
+          v-for="(image, index) in images"
           :key="image.id"
           class="gallery-item"
           :class="{ visible: isVisible }"
@@ -123,17 +158,20 @@ onMounted(() => {
           @click="openLightbox(image)"
         >
           <div class="gallery-image">
-            <img 
-              :src="image.src" 
-              :alt="image.alt"
-              loading="lazy"
-            />
+            <img :src="image.src" :alt="image.alt" loading="lazy" />
             <div class="gallery-overlay">
               <div class="gallery-zoom">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <circle cx="11" cy="11" r="8"/>
-                  <path d="M21 21l-4.35-4.35"/>
-                  <path d="M11 8v6M8 11h6"/>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <circle cx="11" cy="11" r="8" />
+                  <path d="M21 21l-4.35-4.35" />
+                  <path d="M11 8v6M8 11h6" />
                 </svg>
               </div>
             </div>
@@ -141,37 +179,64 @@ onMounted(() => {
         </article>
       </div>
 
-      <!-- Load More -->
       <div v-if="hasMore" class="gallery-more">
         <button class="btn btn-secondary" @click="loadMore">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="6 9 12 15 18 9"/>
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <polyline points="6 9 12 15 18 9" />
           </svg>
           Показать ещё
         </button>
       </div>
     </div>
 
-    <!-- Lightbox -->
     <Teleport to="body">
       <Transition name="lightbox">
-        <div 
-          v-if="lightboxImage" 
-          class="lightbox" 
+        <div
+          v-if="lightboxImage"
+          class="lightbox"
           @click.self="closeLightbox"
           role="dialog"
           aria-modal="true"
           :aria-label="lightboxImage.alt"
         >
-          <button class="lightbox-close" @click="closeLightbox" aria-label="Закрыть">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M18 6L6 18M6 6l12 12"/>
+          <button
+            class="lightbox-close"
+            @click="closeLightbox"
+            aria-label="Закрыть"
+          >
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
             </svg>
           </button>
-          
-          <button class="lightbox-nav lightbox-prev" @click="navigateLightbox(-1)" aria-label="Предыдущее фото">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="15 18 9 12 15 6"/>
+
+          <button
+            class="lightbox-nav lightbox-prev"
+            @click="navigateLightbox(-1)"
+            aria-label="Предыдущее фото"
+          >
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="15 18 9 12 15 6" />
             </svg>
           </button>
 
@@ -179,9 +244,20 @@ onMounted(() => {
             <img :src="lightboxImage.src" :alt="lightboxImage.alt" />
           </div>
 
-          <button class="lightbox-nav lightbox-next" @click="navigateLightbox(1)" aria-label="Следующее фото">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <polyline points="9 18 15 12 9 6"/>
+          <button
+            class="lightbox-nav lightbox-next"
+            @click="navigateLightbox(1)"
+            aria-label="Следующее фото"
+          >
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <polyline points="9 18 15 12 9 6" />
             </svg>
           </button>
         </div>
@@ -220,7 +296,6 @@ onMounted(() => {
   color: var(--text-secondary);
 }
 
-/* Categories */
 .gallery-categories {
   display: flex;
   flex-wrap: wrap;
@@ -261,11 +336,17 @@ onMounted(() => {
   box-shadow: 0 4px 15px var(--accent-glow);
 }
 
-/* Grid */
+.gallery-grid.switching {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.25s ease;
+}
+
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30rem, 1fr));
   gap: 2rem;
+  transition: all 0.25s ease;
 }
 
 @media (min-width: 1200px) {
@@ -274,7 +355,6 @@ onMounted(() => {
   }
 }
 
-/* Item */
 .gallery-item {
   position: relative;
   border-radius: var(--radius-lg);
@@ -350,14 +430,12 @@ onMounted(() => {
   transform: scale(1);
 }
 
-/* Load More */
 .gallery-more {
   display: flex;
   justify-content: center;
   margin-top: 4rem;
 }
 
-/* Lightbox */
 .lightbox {
   position: fixed;
   inset: 0;
@@ -432,7 +510,6 @@ onMounted(() => {
   right: 2rem;
 }
 
-/* Transitions */
 .lightbox-enter-active,
 .lightbox-leave-active {
   transition: all 0.3s ease;

@@ -9,18 +9,19 @@ const isMenuOpen = ref(false);
 const isScrolled = ref(false);
 
 const navItems: NavItem[] = [
-  { id: "prices", label: "Цены", href: "#prices" },
-  { id: "materials", label: "Материалы", href: "#materials" },
   { id: "why-us", label: "Почему мы", href: "#why-us" },
   { id: "advantages", label: "Преимущества", href: "#advantages" },
-  { id: "faq", label: "FAQ", href: "#faq" },
+  { id: "materials", label: "Материалы", href: "#materials" },
+  { id: "prices", label: "Цены", href: "#prices" },
+  { id: "gallery", label: "Галерея", href: "#gallery" },
   { id: "estimate", label: "Получить смету", href: "#quiz" },
+  { id: "faq", label: "FAQ", href: "#faq" },
 ];
 
 const contactInfo = {
-  phone: "+7 (999) 123-45-67",
-  address: "Москва, ул. Примерная, 1",
-  schedule: "Пн-Вс: 09:00-21:00",
+  phone: "+7 (966) 126-66-06",
+  address: "Работаем по Москве и МО",
+  schedule: "Ежедневно: 10:00-19:00",
 };
 
 const toggleMenu = () => {
@@ -49,7 +50,6 @@ onUnmounted(() => {
 <template>
   <header class="header" :class="{ scrolled: isScrolled }">
     <div class="container header-container">
-      <!-- Logo -->
       <a href="/" class="logo" @click="closeMenu">
         <div class="logo-icon">
           <svg
@@ -76,7 +76,6 @@ onUnmounted(() => {
         <span class="logo-text">Мягкие<span class="accent">Окна</span></span>
       </a>
 
-      <!-- Desktop Navigation -->
       <nav class="nav-desktop" aria-label="Главное меню">
         <ul class="nav-list">
           <li v-for="item in navItems" :key="item.id">
@@ -85,7 +84,6 @@ onUnmounted(() => {
         </ul>
       </nav>
 
-      <!-- Contact Info Desktop -->
       <div class="contact-desktop">
         <a
           :href="`tel:${contactInfo.phone.replace(/\s/g, '')}`"
@@ -112,7 +110,7 @@ onUnmounted(() => {
         </div>
       </div>
 
-      <div style="display: flex; gap: 1.2rem;">
+      <div style="display: flex; gap: 1.2rem">
         <button
           class="theme-toggle"
           @click="toggleTheme"
@@ -205,8 +203,6 @@ onUnmounted(() => {
 
 .header.scrolled {
   background: var(--bg-glass);
-  /* backdrop-filter: blur(20px); */
-  /* -webkit-backdrop-filter: blur(20px); */
   box-shadow: var(--shadow-md);
   padding: 1rem 0;
 }
@@ -218,7 +214,6 @@ onUnmounted(() => {
   gap: 2rem;
 }
 
-/* Logo */
 .logo {
   display: flex;
   align-items: center;
@@ -239,7 +234,6 @@ onUnmounted(() => {
   color: var(--accent);
 }
 
-/* Desktop Navigation */
 .nav-desktop {
   display: none;
 }
@@ -271,7 +265,6 @@ onUnmounted(() => {
   background: rgba(130, 219, 247, 0.1);
 }
 
-/* Contact Desktop */
 .contact-desktop {
   display: none;
 }
@@ -300,12 +293,11 @@ onUnmounted(() => {
 
 .contact-details {
   display: flex;
-  gap: 1.5rem;
+  flex-direction: column;
   font-size: 1.2rem;
   color: var(--text-muted);
 }
 
-/* Theme Toggle */
 .theme-toggle {
   display: flex;
   align-items: center;
@@ -327,7 +319,6 @@ onUnmounted(() => {
   color: var(--accent);
 }
 
-/* Burger Menu */
 .burger {
   display: flex;
   flex-direction: column;
@@ -360,7 +351,7 @@ onUnmounted(() => {
 }
 
 .burger.active span:nth-child(1) {
-  transform: rotate(45deg) translate(5px, 5px);
+  transform: rotate(45deg) translate(4px, 4px);
 }
 
 .burger.active span:nth-child(2) {
@@ -368,10 +359,9 @@ onUnmounted(() => {
 }
 
 .burger.active span:nth-child(3) {
-  transform: rotate(-45deg) translate(5px, -5px);
+  transform: rotate(-45deg) translate(4px, -4px);
 }
 
-/* Mobile Menu */
 .mobile-menu {
   position: fixed;
   top: 0;
@@ -384,6 +374,13 @@ onUnmounted(() => {
   flex-direction: column;
   justify-content: space-between;
   z-index: 5;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.mobile-menu::-webkit-scrollbar {
+  display: none;
 }
 
 .mobile-nav-list {
@@ -435,7 +432,6 @@ onUnmounted(() => {
   margin: 0.5rem 0;
 }
 
-/* Transitions */
 .mobile-menu-enter-active,
 .mobile-menu-leave-active {
   transition: all 0.3s ease;

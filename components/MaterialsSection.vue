@@ -47,7 +47,8 @@ const tabs: MaterialTab[] = [
           "Прозрачная структура",
           "Для веранд и террас",
         ],
-        image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
+        image: "img/df645eg.jpg",
+        badge: "Базовый вариант",
       },
     ],
   },
@@ -56,7 +57,7 @@ const tabs: MaterialTab[] = [
     label: "Окантовка",
     intro:
       "Окантовка усиливает конструкцию, служит местом установки люверсов и придает окну законченный внешний вид. Ниже собраны основные варианты, которые можно показать отдельно.",
-    mode: "cards",
+    mode: "mixed",
     cards: [
       {
         title: "Окантовка ПВХ",
@@ -64,41 +65,12 @@ const tabs: MaterialTab[] = [
           "Классический вариант для мягких окон. Имеет глянцевую поверхность, широкий выбор цветов и высокую стойкость к солнцу, влаге и осадкам.",
         features: [
           "Ширина 5 см",
-          "5 цветов на выбор",
-          "Максимальная износостойкость",
-        ],
-        image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
-        badge: "Базовый вариант",
-      },
-      {
-        title: "Окантовка «Люкс» Oxford 1680D",
-        description:
-          "Усиленная окантовка класса люкс из ткани Oxford 1680D. Имеет выраженную текстуру, ПВХ-пропитку и хорошо выглядит на жилых объектах.",
-        features: ["Плотность 1680D", "Тканевая текстура", "Влагостойкая"],
-        image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
-        badge: "Премиум",
-      },
-      {
-        title: "Окантовка «Стандарт» Oxford 600D",
-        description:
-          "Плотная и аккуратная окантовка на ПВХ подложке. Подходит для большинства строений и помещений, выглядит строго и современно.",
-        features: [
-          "Oxford 600D",
-          "Армированные нити",
-          "Премиальный внешний вид",
-        ],
-        image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
-      },
-      {
-        title: "Окантовка ПВХ для коммерции",
-        description:
-          "Практичный вариант для коммерческих, технических и бытовых помещений. Не боится солнца, легко моется и служит долго.",
-        features: [
-          "Устойчива к осадкам",
-          "Легко мыть",
           "Широкая цветовая палитра",
+          "Максимальная износостойкость",
+          "Легко мыть",
         ],
-        image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
+        image: "img/2-1.jpg",
+        badge: "Базовый вариант",
       },
     ],
   },
@@ -118,19 +90,7 @@ const tabs: MaterialTab[] = [
           "Простая установка",
           "Надежная фиксация",
         ],
-        image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
-      },
-      {
-        title: "Поворотная скоба",
-        description:
-          "Удобный вариант крепления для аккуратной фиксации гибких окон. Подходит для объектов, где важны удобство и внешний вид.",
-        features: [
-          "Аккуратный монтаж",
-          "Удобное использование",
-          "Подходит для больших полотен",
-        ],
-        image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
-        badge: "Популярно",
+        image: "img/3-1.jpg",
       },
       {
         title: "Французский замок",
@@ -141,7 +101,7 @@ const tabs: MaterialTab[] = [
           "Надежность",
           "Подходит для разных объектов",
         ],
-        image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
+        image: "img/3-2.jpg",
       },
       {
         title: "Двусторонняя молния",
@@ -152,21 +112,21 @@ const tabs: MaterialTab[] = [
           "Двухстороннее открытие",
           "Для входных групп",
         ],
-        image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
+        image: "img/3-3.jpg",
       },
       {
         title: "Люверсы",
         description:
           "Металлические элементы, через которые выполняется посадка конструкции на поверхность. Могут быть разных форм в зависимости от задачи.",
         features: ["Металлические", "Прочная посадка", "Разные формы"],
-        image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
+        image: "img/3-4.jpg",
       },
       {
         title: "Полимерная скоба",
         description:
-          "Хорошее продолжение больших стальных скоб. Используется вместе с люверсом 42×22, отлично подходит для полотен от 10 м².",
+          "Хорошее продолжение больших стальных скоб. Используется вместе с люверсом 42x22, отлично подходит для полотен от 10 м².",
         features: ["Для больших полотен", "Не боится мороза", "Разные цвета"],
-        image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
+        image: "img/3-5.jpg",
       },
       {
         title: "Подвязочные ремешки",
@@ -177,7 +137,7 @@ const tabs: MaterialTab[] = [
           "Всесезонное использование",
           "Прочные материалы",
         ],
-        image: "img/fb1ba1a1-82fb-4f70-a0a4-14917676aef0.jpg",
+        image: "img/3-6.jpg",
       },
     ],
   },
@@ -378,7 +338,6 @@ onMounted(() => {
   line-height: 1.7;
 }
 
-/* Tabs */
 .materials-tabs {
   display: flex;
   flex-wrap: wrap;
@@ -396,15 +355,15 @@ onMounted(() => {
 }
 
 .materials-tab {
-    padding: 1rem 2.4rem;
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: var(--text-secondary);
-    background: var(--bg-card);
-    border: 1px solid var(--border-light);
-    border-radius: 5rem;
-    cursor: pointer;
-    transition: all var(--transition-fast);
+  padding: 1rem 2.4rem;
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: 5rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
 }
 
 .materials-tab:hover {
@@ -420,7 +379,6 @@ onMounted(() => {
   box-shadow: 0 8px 24px var(--accent-glow);
 }
 
-/* Panel */
 .materials-panel {
   padding: 2.5rem;
   background: var(--bg-glass);
@@ -455,7 +413,6 @@ onMounted(() => {
   margin: 0;
 }
 
-/* Summary */
 .materials-summary {
   display: flex;
   flex-wrap: wrap;
@@ -472,7 +429,6 @@ onMounted(() => {
   font-size: 1.3rem;
 }
 
-/* Grid */
 .materials-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(28rem, 1fr));
@@ -485,7 +441,6 @@ onMounted(() => {
   }
 }
 
-/* Card */
 .material-card {
   background: var(--bg-card);
   border-radius: var(--radius-xl);
@@ -510,7 +465,6 @@ onMounted(() => {
   border-color: var(--accent);
 }
 
-/* Wide card for mixed tab */
 .material-card-wide {
   display: grid;
   grid-template-columns: 220px 1fr;
@@ -527,7 +481,6 @@ onMounted(() => {
   justify-content: center;
 }
 
-/* Image */
 .material-image {
   position: relative;
   height: 22rem;
@@ -564,7 +517,6 @@ onMounted(() => {
   z-index: 1;
 }
 
-/* Content */
 .material-content {
   padding: 2.2rem;
 }
@@ -583,7 +535,6 @@ onMounted(() => {
   margin-bottom: 1.8rem;
 }
 
-/* Features */
 .material-features {
   list-style: none;
   display: grid;
@@ -606,7 +557,6 @@ onMounted(() => {
   margin-top: 0.2rem;
 }
 
-/* CTA */
 .materials-cta {
   display: flex;
   flex-direction: column;
@@ -649,7 +599,6 @@ onMounted(() => {
   margin: 0;
 }
 
-/* Decorative */
 .materials-decor {
   position: absolute;
   inset: 0;
@@ -679,7 +628,6 @@ onMounted(() => {
   animation: float 15s ease-in-out infinite reverse;
 }
 
-/* Responsive */
 @media (max-width: 1024px) {
   .material-card-wide {
     grid-template-columns: 1fr;

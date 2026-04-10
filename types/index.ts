@@ -1,4 +1,3 @@
-// Price Card Types
 export interface PriceItem {
   label?: string
   value: string
@@ -15,7 +14,6 @@ export interface PriceCard {
   image?: string
 }
 
-// Gallery Types
 export interface GalleryImage {
   id: number
   src: string
@@ -28,7 +26,6 @@ export interface GalleryCategory {
   name: string
 }
 
-// FAQ Types
 export interface FAQItem {
   id: number
   question: string
@@ -48,7 +45,6 @@ export interface FAQListItem {
   color?: string
 }
 
-// Why Us Types
 export interface WhyUsCard {
   id: number
   icon: string
@@ -57,7 +53,6 @@ export interface WhyUsCard {
   alt: string
 }
 
-// Quiz Types
 export interface QuizStep {
   id: number
   question: string
@@ -85,7 +80,6 @@ export interface QuizAnswers {
   comment: string
 }
 
-// Contact Form Types
 export interface ContactForm {
   name: string
   phone: string
@@ -93,14 +87,12 @@ export interface ContactForm {
   message?: string
 }
 
-// Navigation Types
 export interface NavItem {
   id: string
   label: string
   href: string
 }
 
-// Email Types
 export interface EmailPayload {
   type: 'quiz' | 'contact' | 'estimate'
   data: QuizAnswers | ContactForm
