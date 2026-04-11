@@ -329,6 +329,16 @@ onBeforeUnmount(() => {
   width: 100%;
 }
 
+.submit-error {
+  background: #ef44441a;
+  border-radius: var(--radius-sm);
+  color: #ef4444;
+  font-size: 1.4rem;
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  text-align: center;
+}
+
 .close-btn {
   position: absolute;
   top: 0.5rem;
