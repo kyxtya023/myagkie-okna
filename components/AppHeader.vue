@@ -78,15 +78,17 @@ const scrollToSection = (id: string) => {
 onMounted(() => {
   window.addEventListener("scroll", handleScroll);
 
-  // ❌ отключаем восстановление скролла браузером
   if ("scrollRestoration" in history) {
     history.scrollRestoration = "manual";
   }
 
-  // 💥 всегда при загрузке наверх
-  window.scrollTo(0, 0);
+  // 💥 фикс
+  requestAnimationFrame(() => {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "auto" });
+    }, 0);
+  });
 
-  // на всякий случай убираем hash
   if (window.location.hash) {
     history.replaceState(null, "", window.location.pathname);
   }

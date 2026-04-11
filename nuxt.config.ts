@@ -106,7 +106,7 @@ export default defineNuxtConfig({
     mailPort: process.env.MAIL_PORT || "465",
     mailUser: process.env.MAIL_USER || "kyxtya093@mail.ru",
     mailPass: process.env.MAIL_PASS || "z1biumnIR79MIBmrsNuJ",
-    mailTo: process.env.MAIL_TO || "plenochnieokna@mail.ru",
+    mailTo: process.env.MAIL_TO || "kyxtya023@yandex.ru",
     // Public (client-side)
     public: {
       siteUrl: process.env.SITE_URL || "http://localhost:3000",

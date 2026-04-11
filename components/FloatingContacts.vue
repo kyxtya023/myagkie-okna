@@ -43,7 +43,7 @@
   position: fixed;
   bottom: 1.2rem;
   right: 1.2rem;
-  z-index: 999;
+  z-index: 5;
 }
 
 .contacts-wrapper {

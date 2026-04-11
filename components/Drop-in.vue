@@ -105,6 +105,10 @@ watchEffect(() => {
   else mobileSize.value = "md";
 });
 
+watch(isVisible, (val) => {
+  document.body.dataset.dropin = val ? "open" : "closed";
+});
+
 /* =========================
    ИЗОБРАЖЕНИЯ
 ========================= */
@@ -292,9 +296,6 @@ const startDrag = (e: MouseEvent | TouchEvent) => {
 
 <style scoped>
 .toast {
-  position: fixed;
-  bottom: 2rem;
-  left: 2rem;
   width: clamp(260px, 80vw, 442px);
   max-width: calc(100% - 4rem);
 
@@ -305,7 +306,7 @@ const startDrag = (e: MouseEvent | TouchEvent) => {
   box-shadow: var(--shadow-lg);
 
   overflow: hidden;
-  z-index: 999;
+  z-index: 5;
 }
 
 .toast-content {

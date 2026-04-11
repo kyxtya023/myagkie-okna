@@ -35,11 +35,11 @@ export default defineEventHandler(async (event): Promise<EmailResponse> => {
 
   if (body.type === 'quiz') {
     const data = body.data as QuizAnswers
-    subject = `Новая заявка с квиза - ${data.name}`
+    subject = `Новая заявка с квиза`
     htmlContent = generateQuizEmailTemplate(data)
   } else if (body.type === 'contact') {
     const data = body.data as ContactForm
-    subject = `Новая заявка - ${data.name}`
+    subject = `Новая заявка`
     htmlContent = generateContactEmailTemplate(data)
   }
 
@@ -81,9 +81,17 @@ function generateQuizEmailTemplate(data: QuizAnswers): string {
               <!-- Header -->
               <tr>
                 <td style="background: linear-gradient(135deg, #82dbf7 0%, #5bc4e8 100%); padding: 30px 40px; text-align: center;">
-                  <h1 style="margin: 0; color: #0f172a; font-size: 24px; font-weight: 700;">
-                    Новая заявка с квиза
+                  <h1 style="margin: 0; color:#0f172a; font-size: 20px; font-weight: 700;">
+                    Новая заявка
                   </h1>
+                  <p style="
+                    margin:8px 0 0;
+                    font-size:13px;
+                    color:#0f172a;
+                    opacity:0.8;
+                  ">
+                  Форма "Квиз"
+                  </p>
                 </td>
               </tr>
               

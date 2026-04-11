@@ -1,258 +1,370 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
-import type { QuizStep, QuizAnswers } from '~/types'
+import { ref, computed, onMounted } from "vue";
+import type { QuizStep, QuizAnswers } from "~/types";
 
-const isVisible = ref(false)
-const currentStep = ref(1)
-const isSubmitting = ref(false)
-const isSubmitted = ref(false)
-const submitError = ref('')
+import { Field, ErrorMessage, useForm } from "vee-validate";
+import * as yup from "yup";
 
-const totalSteps = 7
+import { phoneValidator, getPhoneMaskItems } from "~/utils/phoneValidation";
+import { emailSchema } from "~/utils/emailValidation";
+import { formatPhoneNumber } from "~/utils/phoneFormatting";
+
+import PhoneMaskTooltip from "./PhoneMaskTooltip.vue";
+
+const phoneMaskItems = getPhoneMaskItems();
+
+const isVisible = ref(false);
+const currentStep = ref(1);
+const isSubmitting = ref(false);
+const isSubmitted = ref(false);
+const submitError = ref("");
+
+const totalSteps = 7;
 
 const answers = ref<QuizAnswers>({
-  area: '',
-  doors: '',
-  base: '',
-  package: '',
-  installation: '',
-  timing: '',
-  name: '',
-  phone: '',
-  comment: ''
-})
+  area: "",
+  doors: "",
+  base: "",
+  package: "",
+  installation: "",
+  timing: "",
+  name: "",
+  phone: "",
+  comment: "",
+});
+
+const { handleSubmit, setFieldValue, errors } = useForm({
+  validationSchema: yup.object({
+    name: yup.string().required("Введите имя"),
+    phone: phoneValidator.required("Введите телефон"),
+    email: emailSchema.optional(),
+  }),
+  initialValues: {
+    name: "",
+    phone: "",
+    email: "",
+  },
+  validateOnMount: false,
+});
 
 const steps: QuizStep[] = [
   {
     id: 1,
-    question: 'Какая площадь мягкого остекления?',
-    type: 'select',
+    question: "Какая площадь мягкого остекления?",
+    type: "select",
     options: [
-      { value: 'до 10', label: 'До 10 м²', description: 'Небольшая беседка или балкон' },
-      { value: '10-20', label: '10–20 м²', description: 'Средняя веранда' },
-      { value: '20-40', label: '20–40 м²', description: 'Большая терраса' },
-      { value: 'более 40', label: 'Более 40 м²', description: 'Крупный объект' },
-      { value: 'не знаю', label: 'Не знаю', description: 'Нужен замер' }
-    ]
+      {
+        value: "до 10",
+        label: "До 10 м²",
+        description: "Небольшая беседка или балкон",
+      },
+      { value: "10-20", label: "10–20 м²", description: "Средняя веранда" },
+      { value: "20-40", label: "20–40 м²", description: "Большая терраса" },
+      {
+        value: "более 40",
+        label: "Более 40 м²",
+        description: "Крупный объект",
+      },
+      { value: "не знаю", label: "Не знаю", description: "Нужен замер" },
+    ],
   },
   {
     id: 2,
-    question: 'Сколько дверных проемов?',
-    type: 'select',
+    question: "Сколько дверных проемов?",
+    type: "select",
     options: [
-      { value: '0', label: 'Нет проемов' },
-      { value: '1', label: '1 проем' },
-      { value: '2', label: '2 проема' },
-      { value: '3+', label: '3 и более' }
-    ]
+      { value: "0", label: "Нет проемов" },
+      { value: "1", label: "1 проем" },
+      { value: "2", label: "2 проема" },
+      { value: "3+", label: "3 и более" },
+    ],
   },
   {
     id: 3,
-    question: 'Основание для монтажа',
-    type: 'select',
+    question: "Основание для монтажа",
+    type: "select",
     options: [
-      { value: 'дерево', label: 'Дерево', description: 'Деревянный каркас' },
-      { value: 'металл', label: 'Металл', description: 'Металлический каркас' },
-      { value: 'кирпич', label: 'Кирпич/бетон', description: 'Каменные стены' },
-      { value: 'другое', label: 'Другое', description: 'Уточню позже' }
-    ]
+      { value: "дерево", label: "Дерево", description: "Деревянный каркас" },
+      { value: "металл", label: "Металл", description: "Металлический каркас" },
+      { value: "кирпич", label: "Кирпич/бетон", description: "Каменные стены" },
+      { value: "другое", label: "Другое", description: "Уточню позже" },
+    ],
   },
   {
     id: 4,
-    question: 'Какой комплект вас интересует?',
-    type: 'select',
+    question: "Какой комплект вас интересует?",
+    type: "select",
     options: [
-      { value: 'самомонтаж', label: 'Самомонтаж' },
-      { value: 'под ключ', label: 'Под ключ' },
-      { value: 'не определился', label: 'Не определился', description: 'Нужна консультация' }
-    ]
+      { value: "самомонтаж", label: "Самомонтаж" },
+      { value: "под ключ", label: "Под ключ" },
+      {
+        value: "не определился",
+        label: "Не определился",
+        description: "Нужна консультация",
+      },
+    ],
   },
   {
     id: 5,
-    question: 'Нужен ли монтаж?',
-    type: 'radio',
+    question: "Нужен ли монтаж?",
+    type: "radio",
     options: [
-      { value: 'сам', label: 'Установлю сам' },
-      { value: 'требуется', label: 'Да, нужен монтаж' },
-      { value: 'консультация', label: 'Нужна консультация' }
-    ]
+      { value: "сам", label: "Установлю сам" },
+      { value: "требуется", label: "Да, нужен монтаж" },
+      { value: "консультация", label: "Нужна консультация" },
+    ],
   },
   {
     id: 6,
-    question: 'Когда планируете установку?',
-    type: 'select',
+    question: "Когда планируете установку?",
+    type: "select",
     options: [
-      { value: 'срочно', label: 'Срочно', description: 'В ближайшие дни' },
-      { value: '1-2 недели', label: '1-2 недели' },
-      { value: 'месяц', label: 'В течение месяца' },
-      { value: 'не определился', label: 'Пока не знаю' }
-    ]
+      { value: "срочно", label: "Срочно", description: "В ближайшие дни" },
+      { value: "1-2 недели", label: "1-2 недели" },
+      { value: "месяц", label: "В течение месяца" },
+      { value: "не определился", label: "Пока не знаю" },
+    ],
   },
   {
     id: 7,
-    question: 'Оставьте контакты для связи',
-    type: 'contact'
-  }
-]
+    question: "Оставьте контакты для связи",
+    type: "contact",
+  },
+];
 
-const currentStepData = computed(() => steps[currentStep.value - 1])
+const currentStepData = computed(() => steps[currentStep.value - 1]);
 
-const progress = computed(() => ((currentStep.value - 1) / (totalSteps - 1)) * 100)
+const progress = computed(
+  () => ((currentStep.value - 1) / (totalSteps - 1)) * 100,
+);
 
 const canProceed = computed(() => {
-  const step = currentStepData.value
-  if (step.type === 'contact') {
-    return answers.value.name.trim() !== '' && answers.value.phone.trim() !== ''
+  const step = currentStepData.value;
+
+  if (step.type === "contact") {
+    return answers.value.name.trim() !== "" && answers.value.phone.trim() !== "";
   }
+
   const fieldMap: Record<number, keyof QuizAnswers> = {
-    1: 'area',
-    2: 'doors',
-    3: 'base',
-    4: 'package',
-    5: 'installation',
-    6: 'timing'
-  }
-  const field = fieldMap[step.id]
-  return field ? answers.value[field] !== '' : true
-})
+    1: "area",
+    2: "doors",
+    3: "base",
+    4: "package",
+    5: "installation",
+    6: "timing",
+  };
+
+  const field = fieldMap[step.id];
+  return field ? answers.value[field] !== "" : true;
+});
 
 const selectOption = (value: string) => {
   const fieldMap: Record<number, keyof QuizAnswers> = {
-    1: 'area',
-    2: 'doors',
-    3: 'base',
-    4: 'package',
-    5: 'installation',
-    6: 'timing'
-  }
-  const field = fieldMap[currentStep.value]
+    1: "area",
+    2: "doors",
+    3: "base",
+    4: "package",
+    5: "installation",
+    6: "timing",
+  };
+
+  const field = fieldMap[currentStep.value];
   if (field) {
-    answers.value[field] = value
+    answers.value[field] = value;
   }
-}
+};
 
 const getSelectedValue = () => {
   const fieldMap: Record<number, keyof QuizAnswers> = {
-    1: 'area',
-    2: 'doors',
-    3: 'base',
-    4: 'package',
-    5: 'installation',
-    6: 'timing'
-  }
-  const field = fieldMap[currentStep.value]
-  return field ? answers.value[field] : ''
-}
+    1: "area",
+    2: "doors",
+    3: "base",
+    4: "package",
+    5: "installation",
+    6: "timing",
+  };
+
+  const field = fieldMap[currentStep.value];
+  return field ? answers.value[field] : "";
+};
 
 const nextStep = () => {
   if (currentStep.value < totalSteps && canProceed.value) {
-    currentStep.value++
+    currentStep.value++;
   }
-}
+};
 
 const prevStep = () => {
   if (currentStep.value > 1) {
-    currentStep.value--
+    currentStep.value--;
   }
-}
+};
 
-const submitQuiz = async () => {
-  if (!canProceed.value || isSubmitting.value) return
+/* =========================
+   INPUT SYNC
+========================= */
+const onNameInput = (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  const value = target.value;
 
-  isSubmitting.value = true
-  submitError.value = ''
+  answers.value.name = value;
+  setFieldValue("name", value);
+};
+
+const onPhoneInput = (e: Event) => {
+  const target = e.target as HTMLInputElement;
+  const formatted = formatPhoneNumber(target.value);
+
+  answers.value.phone = formatted;
+  setFieldValue("phone", formatted);
+};
+
+const onPhoneKeyDown = (e: KeyboardEvent) => {
+  if (
+    !/[0-9]/.test(e.key) &&
+    e.key !== "Backspace" &&
+    e.key !== "Delete" &&
+    e.key !== "ArrowLeft" &&
+    e.key !== "ArrowRight" &&
+    e.key !== "Tab" &&
+    e.key !== "Home" &&
+    e.key !== "End"
+  ) {
+    e.preventDefault();
+  }
+};
+
+const submitQuiz = handleSubmit(async () => {
+  if (isSubmitting.value) return;
+
+  isSubmitting.value = true;
+  submitError.value = "";
 
   try {
-    const response = await $fetch('/api/send-email', {
-      method: 'POST',
-      body: {
-        type: 'quiz',
-        data: answers.value
-      }
-    })
+    const response = await $fetch<{ success: boolean; message?: string }>(
+      "/api/send-email",
+      {
+        method: "POST",
+        body: {
+          type: "quiz",
+          data: {
+            ...answers.value,
+            name: answers.value.name.trim(),
+            phone: answers.value.phone.trim(),
+          },
+        },
+      },
+    );
 
     if (response.success) {
-      isSubmitted.value = true
+      isSubmitted.value = true;
     } else {
-      submitError.value = response.message || 'Произошла ошибка при отправке'
+      submitError.value = response.message || "Ошибка отправки";
     }
-  } catch (error) {
-    submitError.value = 'Не удалось отправить заявку. Попробуйте позже.'
+  } catch (e) {
+    submitError.value = "Ошибка сервера";
   } finally {
-    isSubmitting.value = false
+    isSubmitting.value = false;
   }
-}
+});
 
 const resetQuiz = () => {
-  currentStep.value = 1
-  isSubmitted.value = false
-  submitError.value = ''
+  currentStep.value = 1;
+  isSubmitted.value = false;
+  submitError.value = "";
+  isSubmitting.value = false;
+
   answers.value = {
-    area: '',
-    doors: '',
-    base: '',
-    package: '',
-    installation: '',
-    timing: '',
-    name: '',
-    phone: '',
-    comment: ''
-  }
-}
+    area: "",
+    doors: "",
+    base: "",
+    package: "",
+    installation: "",
+    timing: "",
+    name: "",
+    phone: "",
+    comment: "",
+  };
+
+  setFieldValue("name", "");
+  setFieldValue("phone", "");
+  setFieldValue("email", "");
+};
 
 onMounted(() => {
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          isVisible.value = true
+          isVisible.value = true;
         }
-      })
+      });
     },
-    { threshold: 0.1 }
-  )
+    { threshold: 0.1 },
+  );
 
-  const section = document.getElementById('quiz')
-  if (section) observer.observe(section)
-})
+  const section = document.getElementById("quiz");
+  if (section) observer.observe(section);
+});
 </script>
 
 <template>
   <section class="quiz section" id="quiz">
     <div class="container">
       <div class="quiz-wrapper" :class="{ visible: isVisible }">
-
         <Transition name="fade" mode="out-in">
           <div v-if="isSubmitted" class="quiz-success">
             <div class="success-icon">
-              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
+              <svg
+                width="64"
+                height="64"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
               </svg>
             </div>
             <h3>Заявка отправлена!</h3>
             <p>Мы свяжемся с вами в ближайшее время для уточнения деталей</p>
-            <button class="btn btn-secondary" @click="resetQuiz">Отправить ещё</button>
+            <button class="btn btn-secondary" @click="resetQuiz">
+              Отправить ещё
+            </button>
           </div>
 
           <div v-else class="quiz-content">
             <div class="quiz-header">
               <h2 class="quiz-title">Рассчитайте стоимость</h2>
-              <p class="quiz-subtitle">Ответьте на несколько вопросов и получите точный расчёт</p>
+              <p class="quiz-subtitle">
+                Ответьте на несколько вопросов и получите точный расчёт
+              </p>
             </div>
 
             <div class="quiz-progress">
               <div class="progress-bar">
-                <div class="progress-fill" :style="{ width: `${progress}%` }"></div>
+                <div
+                  class="progress-fill"
+                  :style="{ width: `${progress}%` }"
+                ></div>
               </div>
-              <span class="progress-text">Шаг {{ currentStep }} из {{ totalSteps }}</span>
+              <span class="progress-text">
+                Шаг {{ currentStep }} из {{ totalSteps }}
+              </span>
             </div>
 
             <Transition name="slide" mode="out-in">
               <div :key="currentStep" class="quiz-step">
                 <h3 class="step-question">{{ currentStepData.question }}</h3>
 
-                <div v-if="currentStepData.type === 'select' || currentStepData.type === 'radio'" class="step-options">
+                <div
+                  v-if="
+                    currentStepData.type === 'select' ||
+                    currentStepData.type === 'radio'
+                  "
+                  class="step-options"
+                >
                   <button
                     v-for="option in currentStepData.options"
                     :key="option.value"
@@ -265,32 +377,60 @@ onMounted(() => {
                     </span>
                     <div class="option-content">
                       <span class="option-label">{{ option.label }}</span>
-                      <span v-if="option.description" class="option-description">{{ option.description }}</span>
+                      <span
+                        v-if="option.description"
+                        class="option-description"
+                      >
+                        {{ option.description }}
+                      </span>
                     </div>
                   </button>
                 </div>
 
-                <div v-if="currentStepData.type === 'contact'" class="step-contact">
+                <div
+                  v-if="currentStepData.type === 'contact'"
+                  class="step-contact"
+                >
                   <div class="form-group">
-                    <label for="quiz-name">Ваше имя *</label>
-                    <input
-                      id="quiz-name"
-                      v-model="answers.name"
+                    <label>Ваше имя *</label>
+                    <Field
+                      name="name"
+                      as="input"
                       type="text"
                       placeholder="Введите имя"
-                      required
+                      class="input"
+                      :model-value="answers.name"
+                      @input="onNameInput"
                     />
+                    <ErrorMessage name="name" class="error" />
                   </div>
+
                   <div class="form-group">
-                    <label for="quiz-phone">Телефон *</label>
-                    <input
-                      id="quiz-phone"
-                      v-model="answers.phone"
+                    <label>Телефон *</label>
+                    <Field
+                      name="phone"
+                      as="input"
                       type="tel"
                       placeholder="+7 (___) ___-__-__"
-                      required
+                      class="input"
+                      :model-value="answers.phone"
+                      @input="onPhoneInput"
+                      @keydown="onPhoneKeyDown"
                     />
+                    <PhoneMaskTooltip
+                      v-if="errors.phone"
+                      :items="phoneMaskItems"
+                    >
+                      <div class="error-wrap">
+                        <Icon
+                          name="material-symbols:help-outline"
+                          class="error-icon"
+                        />
+                        <ErrorMessage name="phone" class="error" />
+                      </div>
+                    </PhoneMaskTooltip>
                   </div>
+
                   <div class="form-group">
                     <label for="quiz-comment">Комментарий</label>
                     <textarea
@@ -312,8 +452,15 @@ onMounted(() => {
                 class="btn btn-secondary"
                 @click="prevStep"
               >
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="15 18 9 12 15 6"/>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="15 18 9 12 15 6" />
                 </svg>
                 Назад
               </button>
@@ -326,10 +473,18 @@ onMounted(() => {
                 @click="nextStep"
               >
                 Далее
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <polyline points="9 18 15 12 9 6"/>
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <polyline points="9 18 15 12 9 6" />
                 </svg>
               </button>
+
               <button
                 v-else
                 class="btn btn-primary"
@@ -572,6 +727,29 @@ onMounted(() => {
   color: #ef4444;
   font-size: 1.4rem;
   text-align: center;
+}
+
+.error {
+  font-size: 1.2rem;
+  line-height: 1.3;
+  color: #ff7b7b;
+}
+
+.error-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.error-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+
+  color: #ff7b7b;
+  cursor: help;
+  flex-shrink: 0;
+
+  transition: all 0.2s ease;
 }
 
 .quiz-nav {
